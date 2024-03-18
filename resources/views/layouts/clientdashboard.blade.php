@@ -208,7 +208,7 @@ p{
   <!-- Main Sidebar Container -->
   <aside style="background-color:#46444414;" class="main-sidebar sidebars-darks-primarys elevation">
     <!-- Brand Logo -->
-    <a href="" class="brand-link">
+    <a href="{{url('/dashboard')}}" class="brand-link">
       <img src="{{asset('photos/logo.png')}}" alt="THL Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
      <p> <span style="font-weight:700;coslor:white;" class="brand-text font-weidght-lisght pp">THL LOGISTICS</span></p>
     </a>
@@ -241,7 +241,7 @@ p{
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{url('/order')}}" class="nav-link">
                   &nbsp;&nbsp;<i class="far fa-file nav-icon"></i>
                   <p>New Order</p>
                 </a>
