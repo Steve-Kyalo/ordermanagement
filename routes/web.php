@@ -11,9 +11,11 @@ Route::get('/dashboard', function () {
     return view('clientdashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/order', function () {
-    return view('client.order');
-})->middleware(['auth', 'verified'])->name('order');
+// Route::get('/order', function () {
+//     return view('client.order');
+// })->middleware(['auth', 'verified'])->name('order');
+Route::get('/order', [App\Http\Controllers\OrderController::class, 'show_order'])->name('order');
+Route::get('/units', [App\Http\Controllers\UnitsController::class, 'show_units'])->name('units');
 
 Route::get('/edit', function () {
     return view('client.editorder');

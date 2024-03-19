@@ -6,29 +6,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 
-class OrderController extends Controller
+class UnitsController extends Controller
 {
-    public function show_order(){
+    public function show_units(Request $request){
         $client = new Client();
-        $params='{"spec":{"itemsType":"avl_unit","propName":"sys_name","propValueMask":"*","sortType":"sys_name"},"force":1,"flags":13644935,"from":0,"to":4294967295}&svc=core/search_items&sid=510d121d9ef6cc3273c4c14c83a0fe71';
+        $params='{"spec":{"itemsType":"avl_unit","propName":"sys_name","propValueMask":"*","sortType":"sys_name"},"force":1,"flags":13644935,"from":0,"to":4294967295}&svc=core/search_items&sid=513b2eae0294019c808dfb8691a0db7c';
         $apiUrl = "https://hst-api.wialon.com/wialon/ajax.html?params=$params";
+
+        
         try {
             // Make a GET request to the API
             $response = $client->get($apiUrl);
 
             // Get the response body as an array
             $data = json_decode($response->getBody(), true);
-
+//return  $data;
             // Handle the retrieved data as needed (e.g., pass it to a view)
-            return view('client.order', ['data' => $data]);
+            return view('client.units', ['data' => $data]);
         } catch (\Exception $e) {
             // Handle any errors that occur during the API request
             return view('api_error', ['error' => $e->getMessage()]);
         }
-        
     }
-    public function show_editorder(){
-        return view('client.editorder');
-    }
-    
 }
