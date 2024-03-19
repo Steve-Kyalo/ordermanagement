@@ -15,6 +15,10 @@ Route::get('/order', function () {
     return view('client.order');
 })->middleware(['auth', 'verified'])->name('order');
 
+Route::get('/edit', function () {
+    return view('client.editorder');
+})->middleware(['auth', 'verified'])->name('editorder');
+
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
