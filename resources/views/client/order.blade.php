@@ -115,21 +115,11 @@
                       </div>
                     </div>
                   </div>
-                  
-
-                 
-                
-
-                
-                </form>
+             
               </div>
               <!-- /.card-body -->
             </div>
-
-          
-
-           
-
+  
           </div>
           <!--/.col (left) -->
           <!-- right column -->
@@ -146,8 +136,6 @@
             </div>
             <!-- /.card -->
 
-            
-
             <!-- general form elements disabled -->
             <div class="card">
               <div class="card-header" style='background-color:#fff; color:#F37734;font-weight:700;'>
@@ -155,7 +143,6 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <form>
                   <div class="row">
                     <div class="col-sm-12">
                       <!-- text input -->
@@ -183,7 +170,6 @@
 
                   <!-- input states -->
               
-                </form>
               </div>
               <!-- /.card-body -->
             </div>
@@ -192,7 +178,6 @@
             <div class="card card-secondary">
               
               <div class="card-body">
-                <form>
                   <div class="form-group">
                     <div class="custom-file">
                       <input type="file" class="custom-file-input" id="customFile">
@@ -201,19 +186,19 @@
                   </div>
                   <div class="form-group">
                   </div>
-                </form>
               </div>
               
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
             <div class="modal-footer">
-                                <button id="changer4" type="submit" name="myButton" class="btn btn-primary">Save</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </div>
+              <button id="changer4" type="submit" name="myButton" class="btn btn-primary">Save</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
           </div>
           <!--/.col (right) -->
         </div>
+        </form>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </section>
