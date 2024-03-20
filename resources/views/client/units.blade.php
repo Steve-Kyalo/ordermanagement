@@ -17,7 +17,7 @@
       <div class="container-fluid">
         <div class="row">
             {{count($data)}}
-        @for($i=1;$i<=count($data); $i++)
+        @for($i=0;$i<=count($data); $i++)
          {{ $data['items'][$i]['nm'] }}
          @endfor
           <table id="example2" class="table table-bordered table-hover">

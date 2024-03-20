@@ -1,5 +1,13 @@
 @extends('layouts.clientdashboard')
 @section('content')
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
+</head>
+<style>
+  .daterangepicker .drp-calendar {
+    width: 500px;
+}
+</style>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -88,13 +96,61 @@
           <div class="col-lg-6">
             <div class="card">
               <div class="card-header border-0">
+              <h3 class="card-title">Search Orders</h3><br>
                 <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Orders</h3>
-                  <a href="">View Report</a>
+                
+                <div class="input-group">
+                      <input type="text" class="form-control" id="date-range" placeholder="Select Date Range">
+                      <div class="input-group-append">
+                        <span class="input-group-text">
+                          <i class="fa fa-calendar"></i>
+                        </span>
+                      </div>
+                    </div>
+                  
+                  <!-- <a href="">View Report</a> -->
                 </div>
               </div>
               <div class="card-body">
                 <div class="d-flex">
+                    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" defer></script>
+
+                    <script>
+                      $("document").ready(function() {
+                          setTimeout(function() {
+                              $("#date-range").trigger('click');
+                          },10);
+                      });
+                    $(document).ready(function() {
+                      $('#date-range').daterangepicker({
+                        opens: 'left',
+                        drops: 'down',
+                        autoApply: true,
+                        locale: {
+                          format: 'YYYY-MM-DD',
+                          separator: ' - ',
+                          applyLabel: 'Apply',
+                          cancelLabel: 'Cancel',
+                          fromLabel: 'From',
+                          toLabel: 'To',
+                          customRangeLabel: 'Custom',
+                          daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                          monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                          firstDay: 0
+                        }
+                      });
+                    });
+                    $("document").ready(function() {
+                      
+                      $("#date-range").ready(function() {
+                        
+                        $(this).click();
+                       // alert('hey');
+                      });    
+                    });
+                    </script>
                   <!-- <p class="d-flex flex-column">
                     <span class="text-bold text-lg">820</span>
                     <span>Visitors Over Time</span>

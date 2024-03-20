@@ -10,7 +10,7 @@ class OrderController extends Controller
 {
     public function show_order(){
         $client = new Client();
-        $params='{"spec":{"itemsType":"avl_unit","propName":"sys_name","propValueMask":"*","sortType":"sys_name"},"force":1,"flags":13644935,"from":0,"to":4294967295}&svc=core/search_items&sid=510d121d9ef6cc3273c4c14c83a0fe71';
+        $params='{"spec":{"itemsType":"avl_unit","propName":"sys_name","propValueMask":"*","sortType":"sys_name"},"force":1,"flags":13644935,"from":0,"to":4294967295}&svc=core/search_items&sid=51c11e92210629d196b2572d94abf860';
         $apiUrl = "https://hst-api.wialon.com/wialon/ajax.html?params=$params";
         try {
             // Make a GET request to the API
