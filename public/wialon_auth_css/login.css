@@ -1,0 +1,41 @@
+body{
+    background-image:url(/dskin/images/login/logo_bg.svg);
+    min-height: 400px;
+    overflow-y: hidden;
+}
+.header {
+    background-image: url(/dskin/images/login/logo_bgs.svg);
+    height: 10px;
+    margin: 10px 10px;
+}
+.inner-parent, .outer-parent {
+    display: table;
+    height: 10%;
+    width: 100%;
+}
+.content .form-container {
+    background: #fff;
+}
+#auth-form input {
+    background-color: #fff;
+    border: 1px solid #999;
+    border-radius:8px;
+    box-sizing: border-box;
+    display: block;
+    height: 40px;
+    margin: 0 0 12px;
+    padding: 0 5px;
+    width: 100%;
+}
+#auth-form {
+    margin: 0 auto;
+    padding: 35px 0;
+    width: 100%;
+}
+ .footer {
+    display:none;
+}
+ /*
+.title {
+    display:none;
+} */

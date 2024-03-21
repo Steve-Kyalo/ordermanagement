@@ -19,7 +19,7 @@
             <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
             <div class="bolded">
                  <center><img src="/photos/tracking-hub-logo.png" width="70%" alt="" srcset=""></center>
-                 <center>Logistics</center> <br>
+                 <center>Logistics</center>
             </div>
                 {{ $slot }}
             </div>
