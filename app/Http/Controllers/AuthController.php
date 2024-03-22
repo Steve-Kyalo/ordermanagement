@@ -1,48 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
-use Illuminate\Support\Facades\Http;
-use GuzzleHttp\Client;
-
 use App\Models\User;
+use Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
-class AuthenticatedSessionController extends Controller
+class AuthController extends Controller
 {
-    /**
-     * Display the login view.
-     */
-    public function create(): View
+    function index(Request $request)
     {
-        return view('auth.login');
-    }
-
-    /**
-     * Handle an incoming authentication request.
-     */
-    public function store(LoginRequest $request): RedirectResponse
-    {
-        //$request->authenticate();
-        //$request->session()->regenerate();
-        //return redirect()->intended(route('dashboard', absolute: false));
         //\Log::info($request->input());
         if(!$request->access_token)
         {
-            //return 'hello';
-            return redirect('https://hosting.wialon.com/login.html?redirect_uri='.route('auth.index'));
-           // return view('auth.login');
+            return redirect('https://hosting.wialon.com/login.html?css_url=http://localhost:8000/wialon_auth_css/login.css&redirect_uri='.route('auth.index'));
         }
+        //return 'hello2';
+
         ///Get Data
         $token = $request->access_token;
-        //return 'hello2';
         // Curl more userDetails
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -82,28 +60,16 @@ class AuthenticatedSessionController extends Controller
         if (Auth::guard('web')->attempt(['name' => $username, 'password' => $token], 1)) 
         {
             $request->session()->regenerate();            
-            return redirect()->intended(route('dashboard', absolute: false));
+            return redirect()->intended(route('dashboard'));
         }
         else
         {
             return redirect('https://hosting.wialon.com/login.html?redirect_uri='.route('auth.index'));
-            //return view('auth.login');
         }
-    
     }
 
-    /**
-     * Destroy an authenticated session.
-     */
-    public function destroy(Request $request): RedirectResponse
+    function home()
     {
-        Auth::guard('web')->logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        //return redirect('/');
-        return redirect('https://hosting.wialon.com/login.html?css_url=http://localhost:8000/wialon_auth_css/login.css&redirect_uri='.route('auth.index'));
+        return view('home');
     }
 }
