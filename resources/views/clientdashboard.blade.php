@@ -9,6 +9,36 @@
 }
 </style>
 <div class="content-wrapper">
+    @if (session()->has('success'))
+      <script>
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Order details updated successfully",
+            showConfirmButton: false,
+            timer: 4000
+          });
+      </script>
+    @endif
+
+    @if (session()->has('error'))
+      <script>
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "Order not updated, please try again!!",
+            showConfirmButton: false,
+            timer: 4000
+          });
+      </script>
+    @endif
+    @if(Session('error'))
+     <div class="alert alert-danger">{{ (Session('error')) }}</div>
+    @endif
+
+    @if(Session('Success'))
+      <center> <h3> <div class="alert alert-success">{{ (Session('Success')) }}</div></h3></center>
+    @endif
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -100,12 +130,12 @@
                 <div class="d-flex justify-content-between">
                 
                 <div class="input-group">
-                      <input type="text" class="form-control" id="date-range" placeholder="Select Date Range">
+                      <!-- <input type="text" class="form-control" id="date-range" placeholder="Select Date Range">
                       <div class="input-group-append">
                         <span class="input-group-text">
                           <i class="fa fa-calendar"></i>
                         </span>
-                      </div>
+                      </div> -->
                     </div>
                   
                   <!-- <a href="">View Report</a> -->
@@ -243,12 +273,13 @@
               <div class="card-body table-responsive p-0">
                 <?php $neworders=DB::table('orders')->where('status','New')->get(); $x=1; ?>
                 <table class="table table-bordered table-valign-middle">
-                  <thead style="colsor:blue;background-color:#eee;">
+                  <thead style="colsor:blue;background-color:#A4D3E3;">
                   <tr>
                     <th>No.</th>
                     <th>Name</th>
                     <th>Create Date</th>
                     <th>Client Name</th>
+                    <th>Phone</th>
                     <th>Delivery Start Date</th>
                     <th>Delivery End Date</th>
                     <th>Status</th>
@@ -262,12 +293,13 @@
                     <td>{{$neworder->ordername}}</td>
                     <td>{{$neworder->created_at}}</td>
                     <td>{{$neworder->firstname}} {{$neworder->lastname}}</td>
+                    <td>{{$neworder->phone}}</td>
                     <td>{{$neworder->startdate}}</td>
                     <td>{{$neworder->enddate}}</td>
                     <td>{{$neworder->status}}</td>
                     <td>
-                    <a href="{{route('edit_order',['id'=>$neworder->id])}}"><i style="color:green; font-size:20px;" class="fa fa-edit"></i></a>
-                        <i style="color:red; font-size:20px;" class="fa fa-trash"></i>
+                    <a href="{{route('edit_order',['id'=>$neworder->id])}}"><i style="color:green; font-size:18px;" class="fa fa-edit"></i></a>&nbsp;&nbsp;
+                        <i style="color:red; font-size:18px;" class="fa fa-trash"></i>
                     </td>
                   </tr>
                   <?php $x=$x+1; ?>

@@ -16,9 +16,11 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
+        <input id="myInput3" placeholder="Search here....">
+        <div class="box-body table-responsive padding refrdeshnew17"style="width:100%; background-color:#ddddhdd;height:50%;">
            <?php $x=1; ?>
           <table id="example2" class="table table-bordered table-hover">
-                  <thead>
+                  <thead style="colsor:#A4D3E3; background-color:#A4D3E3;">
                   <tr>
                     <th>No.</th>
                     <th>Route Name</th>
@@ -29,7 +31,7 @@
                     <th>Client Cost</th>
                   </tr>
                   </thead>
-                  <tbody>
+                  <tbody style="background-color:#fff;">
                   @for($i=0;$i < count($data['items']); $i++)
                   <tr>
                     <td>{{$x}}</td>
@@ -45,6 +47,7 @@
                   
                   </tbody>
                 </table>
+            </div>
           <!--/.col (right) -->
         </div>
         <!-- /.row -->

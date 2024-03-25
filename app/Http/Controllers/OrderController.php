@@ -76,5 +76,31 @@ class OrderController extends Controller
             $orders = DB::table('orders')->where('id',$id)->first();
             return view('client.editorder',['orders'=> $orders]);
         }
+    public function update_order(Request $request)
+        {
+            $orders = Order::find($request->input('id'));
+            $orders->ordername = $request->input('ordername');
+            $orders->ordertype = $request->input('ordertype');
+            $orders->address = $request->input('address');
+            $orders->startdate = $request->input('startdate');
+            $orders->enddate = $request->input('enddate');
+            $orders->cost = $request->input('cost');
+            $orders->weight = $request->input('weight');
+            $orders->volume = $request->input('volume');
+            $orders->servicetime = $request->input('servicetime');
+            $orders->radius = $request->input('radius');
+            $orders->priority = $request->input('priority');
+            $orders->comment = $request->input('comment');
+            $orders->firstname = $request->input('firstname');
+            $orders->lastname = $request->input('lastname');
+            $orders->phone = $request->input('phone');
+            $orders->email = $request->input('email');
+            $orders->edited_by = Auth::user()->id;
+            $orders->edited_at = date('Y-m-d H:i:s');
+
+            $orders->save();
+
+            return redirect()->route('dashboard')->with('success','Order details updated Successfully');   
+        }
     
 }

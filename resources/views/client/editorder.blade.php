@@ -1,6 +1,5 @@
 @extends('layouts.clientdashboard')
 @section('content')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     @if (session()->has('success'))
@@ -8,7 +7,7 @@
           Swal.fire({
             position: "top-end",
             icon: "success",
-            title: "Order details added successfully",
+            title: "Order details updated successfully",
             showConfirmButton: false,
             timer: 4000
           });
@@ -20,7 +19,7 @@
           Swal.fire({
             position: "top-end",
             icon: "error",
-            title: "Order not saved!! Order processes currently ongoing!",
+            title: "Order not updated, please try again!!",
             showConfirmButton: false,
             timer: 4000
           });
@@ -49,13 +48,14 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-              <form class="was-validated" method="POST" action="{{ route('store_orders') }}">
+              <form class="was-validated" method="POST" action="{{ route('update_order') }}">
                 @csrf
                   <div class="row">
                     <div class="col-sm-6">
                       <!-- text input -->
                       <div class="form-group">
                         <label>Order name</label>
+                        <input hidden name="id" id="id" value="{{$orders->id}}" type="text">
                         <input name="ordername" id="ordername" value="{{$orders->ordername}}" required type="text" class="form-control" maxlength="30" minlength="2" is-invalid placeholder="">
                       </div>
                     </div>
@@ -226,7 +226,7 @@
             </div>
             <!-- /.card -->
             <div class="modal-footer">
-              <button id="saveButton" type="submit" name="saveButton" class="btn btn-primary">Save</button>
+              <button id="saveButton" type="submit" name="saveButton" class="btn btn-primary">Save Changes</button>
              <a href="{{url('/dashboard')}}"><button type="button" class="btn btn-secondary">Close</button></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
           </div>
