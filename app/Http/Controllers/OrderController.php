@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
+use App\Models\Order;
+use Auth;
+use DB;
 
 class OrderController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
+
     public function show_order(){
         $client = new Client();
         $params='{"spec":{"itemsType":"avl_unit","propName":"sys_name","propValueMask":"*","sortType":"sys_name"},"force":1,"flags":13644935,"from":0,"to":4294967295}&svc=core/search_items&sid=51c11e92210629d196b2572d94abf860';
@@ -30,5 +38,43 @@ class OrderController extends Controller
     public function show_editorder(){
         return view('client.editorder');
     }
+    public function store_orders(Request $request){
+        // $this->validate($request,
+        // ['ordername' => 'required']);
+
+        $ordername = $request->input('ordername');
+        $ordertype = $request->input('ordertype');
+        $address = $request->input('address');
+        $startdate = $request->input('startdate');
+        $enddate = $request->input('enddate');
+        $cost = $request->input('cost');
+        $weight = $request->input('weight');
+        $volume = $request->input('volume');
+        $servicetime = $request->input('servicetime');
+        $radius = $request->input('radius');
+        $priority = $request->input('priority');
+        $comment = $request->input('comment');
+        $firstname = $request->input('firstname');
+        $lastname = $request->input('lastname');
+        $phone = $request->input('phone');
+        $email = $request->input('email');
+        $status = 'New';
+        $created_by = Auth::user()->id;
+ 
+        $order = Order::where('ordername', '=', $request->input('ordername'))->where('status','<>','Completed')->first();
+        if ($order === null) {
+            DB::insert('insert into orders(ordername,ordertype,address,startdate,enddate,cost,weight,volume,servicetime,radius,priority,comment,firstname,lastname,phone,email,status,created_by) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$ordername,$ordertype,$address,$startdate,$enddate,$cost,$weight,$volume,$servicetime,$radius,$priority,$comment,$firstname,$lastname,$phone,$email,$status,$created_by]);
+            return redirect()->route('order')->with('success','Order details added successfully');
+        } else {
+            return redirect()->route('order')->with('error','Order processes ongoing!');
+        } 
+
+    }
+
+    public function edit_order($id)
+        {
+            $orders = DB::table('orders')->where('id',$id)->first();
+            return view('client.editorder',['orders'=> $orders]);
+        }
     
 }

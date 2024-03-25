@@ -232,7 +232,7 @@
          <div class="row">
           <div class="col-lg-12">
             <div class="card">
-              <div class="card-header border-0">
+              <div class="card-header bosrder-0">
                 <h3 class="card-title" style="color:#FF6B00;font-weight:700;">New Orders</h3>
                 <div class="card-tools">
                   <!-- <a href="#" class="btn btn-tool btn-sm">
@@ -241,45 +241,37 @@
                 </div>
               </div>
               <div class="card-body table-responsive p-0">
-                <table class="table table-striped table-valign-middle">
-                  <thead>
+                <?php $neworders=DB::table('orders')->where('status','New')->get(); $x=1; ?>
+                <table class="table table-bordered table-valign-middle">
+                  <thead style="colsor:blue;background-color:#eee;">
                   <tr>
+                    <th>No.</th>
                     <th>Name</th>
                     <th>Create Date</th>
-                    <th>Completed Date</th>
+                    <th>Client Name</th>
+                    <th>Delivery Start Date</th>
+                    <th>Delivery End Date</th>
                     <th>Status</th>
-                    <th>action</th>
+                    <th>Action</th>
                   </tr>
                   </thead>
                   <tbody>
+                  @foreach( $neworders as $neworder)
                   <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{$x}}</td>
+                    <td>{{$neworder->ordername}}</td>
+                    <td>{{$neworder->created_at}}</td>
+                    <td>{{$neworder->firstname}} {{$neworder->lastname}}</td>
+                    <td>{{$neworder->startdate}}</td>
+                    <td>{{$neworder->enddate}}</td>
+                    <td>{{$neworder->status}}</td>
+                    <td>
+                    <a href="{{route('edit_order',['id'=>$neworder->id])}}"><i style="color:green; font-size:20px;" class="fa fa-edit"></i></a>
+                        <i style="color:red; font-size:20px;" class="fa fa-trash"></i>
+                    </td>
                   </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
+                  <?php $x=$x+1; ?>
+                  @endforeach
                   </tbody>
                 </table>
               </div>
