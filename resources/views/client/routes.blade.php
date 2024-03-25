@@ -6,7 +6,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h5>List of all units</h5>
+            <h5>List of all routes</h5>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -16,36 +16,34 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-        <?php $x=1; ?>
+           <?php $x=1; ?>
           <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th>Unit</th>
-                    <th>Driver</th>
-                    <th>Make</th>
-                    <th>Model</th>
-                    <th>Registration Plate</th>
-                    <th>Carrying Capacity</th>
-                    <th>Volume</th>
+                    <th>No.</th>
+                    <th>Route Name</th>
+                    <th>Address</th>
+                    <th>Delivery Interval</th>
+                    <th>Arrival Time</th>
+                    <th>Client</th>
+                    <th>Client Cost</th>
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($data['items'] as $data['item'])
+                  @for($i=0;$i < count($data['items']); $i++)
                   <tr>
                     <td>{{$x}}</td>
-                    <td>{{ $data['item']['nm'] }}</td>
+                    <td>{{ $data['items'][$i]['nm'] }}</td>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>{{ $data['item']['nm'] }}</td>
                     <td></td>
                     <td></td>
                   </tr>
                   <?php $x=$x+1; ?>
-                  @endforeach
+                  @endfor
                   
                   </tbody>
-                  
                 </table>
           <!--/.col (right) -->
         </div>

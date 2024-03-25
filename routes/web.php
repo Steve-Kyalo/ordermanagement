@@ -16,6 +16,7 @@ Route::get('/dashboard', function () {
 // })->middleware(['auth', 'verified'])->name('order');
 Route::get('/order', [App\Http\Controllers\OrderController::class, 'show_order'])->name('order');
 Route::get('/units', [App\Http\Controllers\UnitsController::class, 'show_units'])->name('units');
+Route::get('/routes', [App\Http\Controllers\RoutesController::class, 'show_routes'])->name('routes');
 
 Route::get('/edit', function () {
     return view('client.editorder');

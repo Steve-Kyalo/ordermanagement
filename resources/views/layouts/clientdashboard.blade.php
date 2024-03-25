@@ -264,7 +264,7 @@ p{
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
+            <a href="{{url('/routes')}}" class="nav-link">
               <i class="nav-icon fa fa-road"></i>
               <p>
                 Routes
@@ -272,7 +272,7 @@ p{
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
+            <a href="{{url('/units')}}" class="nav-link">
               <i class="nav-icon fa fa-car-side"></i>
               <p>
                 Units

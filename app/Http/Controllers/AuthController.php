@@ -45,6 +45,7 @@ class AuthController extends Controller
         {
             User::where("name", $username)->update([
                 "access_token" => $token,
+                "eid" => $response->eid,
                 "password" => Hash::make($token)
             ]);
         }
@@ -53,6 +54,7 @@ class AuthController extends Controller
             $user = new User();
             $user->name = $username;
             $user->access_token = $token;
+            $user->eid = $response->eid;
             $user->password = Hash::make($token);
             $user->save();
         }
