@@ -18,6 +18,8 @@ Route::get('/order', [App\Http\Controllers\OrderController::class, 'show_order']
 Route::post('/order', [App\Http\Controllers\OrderController::class, 'store_orders'])->name('store_orders');
 Route::get('/order/{id}', [App\Http\Controllers\OrderController::class, 'edit_order'])->name('edit_order');
 Route::post('/order/update', [App\Http\Controllers\OrderController::class, 'update_order'])->name('update_order');
+Route::delete('/order/{id}', [App\Http\Controllers\OrderController::class, 'destroyorder'])->name('destroyorder');
+
 Route::get('/units', [App\Http\Controllers\UnitsController::class, 'show_units'])->name('units');
 Route::get('/routes', [App\Http\Controllers\RoutesController::class, 'show_routes'])->name('routes');
 

@@ -67,6 +67,7 @@ p{
     color:#293461;
     font-weight:bold;
 }
+.pointer {cursor: pointer;}
 </style>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">

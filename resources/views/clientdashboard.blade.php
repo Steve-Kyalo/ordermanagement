@@ -126,21 +126,28 @@
           <div class="col-lg-6">
             <div class="card">
               <div class="card-header border-0">
-              <h3 class="card-title">Search Orders</h3><br>
-                <div class="d-flex justify-content-between">
-                
-                <div class="input-group">
+              <h3 style="color:#FF6B00;font-weight:700;" class="card-title">On-Time <font color="black">vs</font> Delayed <font color="black">vs</font> Cancelled Orders</h3><br>
+                <?php
+ 
+                    $dataPoints = array( 
+                      array("label"=>"On-Time", "y"=>40),
+                      array("label"=>"Delayed", "y"=>25),
+                      array("label"=>"Cancelled", "y"=>35),
+                    )
+                      
+                    ?>
+
+                    
                       <!-- <input type="text" class="form-control" id="date-range" placeholder="Select Date Range">
                       <div class="input-group-append">
                         <span class="input-group-text">
                           <i class="fa fa-calendar"></i>
                         </span>
                       </div> -->
-                    </div>
+                </div>
                   
                   <!-- <a href="">View Report</a> -->
-                </div>
-              </div>
+                
               <div class="card-body">
                 <div class="d-flex">
                     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -181,6 +188,9 @@
                       });    
                     });
                     </script>
+                    <!-- <div id="chartContainer" style="height: 80%; width: 100%;"></div> -->
+
+
                   <!-- <p class="d-flex flex-column">
                     <span class="text-bold text-lg">820</span>
                     <span>Visitors Over Time</span>
@@ -195,7 +205,9 @@
                 <!-- /.d-flex -->
 
                 <div class="position-relative mb-4">
-                  <canvas id="visitosrs-chart" height="200"></canvas>
+                  <canvas id="visitosrs-chart" height="200">
+                    
+                  </canvas>
                 </div>
 
                 <div class="d-flex flex-row justify-content-end">
@@ -299,7 +311,7 @@
                     <td>{{$neworder->status}}</td>
                     <td>
                     <a href="{{route('edit_order',['id'=>$neworder->id])}}"><i style="color:green; font-size:18px;" class="fa fa-edit"></i></a>&nbsp;&nbsp;
-                        <i style="color:red; font-size:18px;" class="fa fa-trash"></i>
+                        <buttons class="remove-user pointer" data-id="{{ $neworder->id }}" data-action="{{ route('destroyorder',$neworder->id) }}"><font color="red"><i class="fa fa-trash-alt"></i></font></buttons>
                     </td>
                   </tr>
                   <?php $x=$x+1; ?>
@@ -319,4 +331,59 @@
     </div>
     <!-- /.content -->
   </div>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+      <script type="text/javascript">
+        $("body").on("click",".remove-user",function(){
+        var current_object = $(this);
+        swal({
+          title: "",
+          text: "This record will be permanantly deleted!",
+          type: "error",
+          showCancelButton: true,
+          dangerMode: true,
+          cancelButtonClass: '#DD6B55',
+          confirmButtonColor: '#dc3545',
+          confirmButtonText: 'Confirm delete',
+          },function (result) {
+            if (result) {
+              var action = current_object.attr('data-action');
+              var token = jQuery('meta[name="csrf-token"]').attr('content');
+              var id = current_object.attr('data-id');
+
+                $('body').html("<form class='form-inline remove-form' method='post' action='"+action+"'></form>");
+                $('body').find('.remove-form').append('<input name="_method" type="hidden" value="delete">');
+                $('body').find('.remove-form').append('<input name="_token" type="hidden" value="'+token+'">');
+                $('body').find('.remove-form').append('<input name="id" type="hidden" value="'+id+'">');
+                $('body').find('.remove-form').submit();
+              }
+            });
+           });
+  </script>
+<script>
+      window.onload = function() {
+      
+      
+      var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        // title: {
+        //   text: "On-Time vs Delayed Orders"
+        // },
+        subtitles: [{
+          text: "November 2017"
+        }],
+        data: [{
+          type: "pie",
+          yValueFormatString: "#,##0.00\"%\"",
+          indexLabel: "{label} ({y})",
+          dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
+        }]
+      });
+      chart.render();
+      
+      }
+  </script>
+    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+      
   @endsection

@@ -102,5 +102,15 @@ class OrderController extends Controller
 
             return redirect()->route('dashboard')->with('success','Order details updated Successfully');   
         }
+
+    public function destroyorder(Request $request,$id)
+        {
+            $orders = Order::find($id);
+            $orders->status='Deleted';
+            $orders->deleted_by=Auth::user()->id;
+            $orders->deleted_at = date('Y-m-d H:i:s');
+            $orders->save();
+            return back()->with('Success','Order details deleted successfully');
+        }
     
 }
