@@ -6,6 +6,91 @@
 <style>
   .daterangepicker .drp-calendar {
     width: 500px;
+  
+}
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+   background-color: #fff;
+}
+.stepper-wrapper {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.stepper-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
+}
+
+.stepper-item::before {
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #ccc;
+  width: 100%;
+  top: 20px;
+  left: -50%;
+  z-index: 2;
+}
+
+.stepper-item::after {
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #ccc;
+  width: 100%;
+  top: 20px;
+  left: 50%;
+  z-index: 2;
+}
+
+.stepper-item .step-counter {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ccc;
+  margin-bottom: 6px;
+}
+
+.stepper-item.active {
+  font-weight: bold;
+}
+
+.stepper-item.completed .step-counter {
+  background-color: #4bb543;
+}
+
+.stepper-item.completed::after {
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #4bb543;
+  width: 100%;
+  top: 20px;
+  left: 50%;
+  z-index: 3;
+}
+
+.stepper-item:first-child::before {
+  content: none;
+}
+.stepper-item:last-child::after {
+  content: none;
+}
+th {
+  background: #17A2B8;
+  position: sticky;
+  top: 0; /* Don't forget this, required for the stickiness */
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
 }
 </style>
 <div class="content-wrapper">
@@ -67,7 +152,7 @@
               <span class="info-box-icon bg-dangser elevation-1"><i style="color:green;"class="fas fa-car"></i></span>
 
               <div class="info-box-content">
-                <span class="info-box-text">Pending Orders</span>
+                <span class="info-box-text">New Orders</span>
                 <span class="info-box-number">20</span>
               </div>
               <!-- /.info-box-content -->
@@ -126,18 +211,7 @@
           <div class="col-lg-6">
             <div class="card">
               <div class="card-header border-0">
-              <h3 style="color:#FF6B00;font-weight:700;" class="card-title">On-Time <font color="black">vs</font> Delayed <font color="black">vs</font> Cancelled Orders</h3><br>
-                <?php
- 
-                    $dataPoints = array( 
-                      array("label"=>"On-Time", "y"=>40),
-                      array("label"=>"Delayed", "y"=>25),
-                      array("label"=>"Cancelled", "y"=>35),
-                    )
-                      
-                    ?>
-
-                    
+              <h3 style="color:#FF6B00;font-weight:700;" class="card-title">On-Time <font color="black">vs</font> Delayed Orders</h3><br> 
                       <!-- <input type="text" class="form-control" id="date-range" placeholder="Select Date Range">
                       <div class="input-group-append">
                         <span class="input-group-text">
@@ -205,19 +279,15 @@
                 <!-- /.d-flex -->
 
                 <div class="position-relative mb-4">
-                  <canvas id="visitosrs-chart" height="200">
-                    
-                  </canvas>
+                <canvas id="sales-chart" height="200"></canvas>
                 </div>
-
                 <div class="d-flex flex-row justify-content-end">
-                  <!-- <span class="mr-2">
-                    <i class="fas fa-square text-primary"></i> This Week
+                  <span class="mr-2">
+                    <i class="fas fa-square text-primary"></i> On-Time Orders
                   </span>
-
                   <span>
-                    <i class="fas fa-square text-gray"></i> Last Week
-                  </span> -->
+                    <i class="fas fa-square text-gray"></i> Delayed Orders
+                  </span>
                 </div>
               </div>
             </div>
@@ -230,8 +300,8 @@
             <div class="card">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Routes</h3>
-                  <a href="javascript:void(0);">View Report</a>
+                <h3 style="color:#FF6B00;font-weight:700;" class="card-title">Current Order Status</h3>
+                  <!-- <a href="javascript:void(0);">View Report</a> -->
                 </div>
               </div>
               <div class="card-body">
@@ -249,8 +319,71 @@
                 </div>
                 <!-- /.d-flex -->
 
-                <div class="position-relative mb-4">
-                  <canvas id="sales-charst" height="200"></canvas>
+                <div class="position-relative mb-4" style="height:225px;">
+                  <!-- <canvas id="sales-charrt" height="200"></canvas> -->
+                <div class="card-body table-responsive p-0" style="height:250px;">
+                <?php $neworders=DB::table('orders')->where('status','New')->get(); $x=1; ?>
+                <table class="table table-striped pointer table-valign-middle">
+                  
+                  <tbody>
+                  @foreach( $neworders as $neworder)
+                  <tr>
+                    <td>{{$neworder->ordername}}</td>
+                    <td><div class="stepper-wrapper">
+                        <div class="stepper-item completed">
+                          <div class="step-counter">1</div>
+                          <div class="step-name">New</div>
+                        </div>
+                        <div class="stepper-item completed">
+                          <div class="step-counter">2</div>
+                          <div class="step-name">Loading</div>
+                        </div>
+                        <div class="stepper-item completed">
+                          <div class="step-counter">3</div>
+                          <div class="step-name">Transit</div>
+                        </div>
+                        <div class="stepper-item active">
+                          <div class="step-counter">4</div>
+                          <div class="step-name">Unloading</div>
+                        </div>
+                        <div class="stepper-item">
+                          <div class="step-counter">5</div>
+                          <div class="step-name">Fulfilled</div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{{$neworder->ordername}}</td>
+                    <td><div class="stepper-wrapper">
+                        <div class="stepper-item completed">
+                          <div class="step-counter">1</div>
+                          <div class="step-name">New</div>
+                        </div>
+                        <div class="stepper-item completed">
+                          <div class="step-counter">2</div>
+                          <div class="step-name">Loading</div>
+                        </div>
+                        <div class="stepper-item active">
+                          <div class="step-counter">3</div>
+                          <div class="step-name">Transit</div>
+                        </div>
+                        <div class="stepper-item">
+                          <div class="step-counter">4</div>
+                          <div class="step-name">Unloading</div>
+                        </div>
+                        <div class="stepper-item">
+                          <div class="step-counter">5</div>
+                          <div class="step-name">Fulfilled</div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <?php $x=$x+1; ?>
+                  @endforeach
+                  </tbody>
+                </table>
+              </div>
                 </div>
 
                 <div class="d-flex flex-row justify-content-end">
@@ -360,30 +493,5 @@
               }
             });
            });
-  </script>
-<script>
-      window.onload = function() {
-      
-      
-      var chart = new CanvasJS.Chart("chartContainer", {
-        animationEnabled: true,
-        // title: {
-        //   text: "On-Time vs Delayed Orders"
-        // },
-        subtitles: [{
-          text: "November 2017"
-        }],
-        data: [{
-          type: "pie",
-          yValueFormatString: "#,##0.00\"%\"",
-          indexLabel: "{label} ({y})",
-          dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
-        }]
-      });
-      chart.render();
-      
-      }
-  </script>
-    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
-      
+  </script> 
   @endsection
