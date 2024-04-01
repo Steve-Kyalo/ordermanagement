@@ -153,7 +153,8 @@ th {
 
               <div class="info-box-content">
                 <span class="info-box-text">New Orders</span>
-                <span class="info-box-number">20</span>
+                <?php $neworders=DB::table('orders')->where('status','new')->get(); ?>
+                <span class="info-box-number">{{count($neworders)}}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -170,7 +171,8 @@ th {
 
               <div class="info-box-content">
                 <span class="info-box-text">Active Orders</span>
-                <span class="info-box-number">10</span>
+                <?php $activeorders = DB::table('orders')->where('status','assigned')->get(); ?>
+                <span class="info-box-number">{{count($activeorders)}}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -182,8 +184,9 @@ th {
               <span class="info-box-icon bg-warfning elevation-1"><i style="color:green;"class="fas fa-car"></i></span>
 
               <div class="info-box-content">
-                <span class="info-box-text">Cancelled Orders</span>
-                <span class="info-box-number">4</span>
+                <span class="info-box-text">Rejected Orders</span>
+                <?php $rejectedorders = DB::table('orders')->where('status','new')->where('rejected',1)->get(); ?>
+                <span class="info-box-number">{{count($rejectedorders)}}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -195,9 +198,10 @@ th {
               <span class="info-box-icon bg-insfo elevation-1"><i style="color:green;"class="fas fa-car"></i></span>
 
               <div class="info-box-content">
-                <span class="info-box-text">Completed Orders</span>
+              <?php $completedorders = DB::table('orders')->where('status','completed')->get(); ?>
+                <span class="info-box-text">Fulfilled Orders</span>
                 <span class="info-box-number">
-                  10
+                  {{count($completedorders)}}
                 </span>
               </div>
               <!-- /.info-box-content -->
@@ -302,6 +306,29 @@ th {
                 <div class="d-flex justify-content-between">
                 <h3 style="color:#FF6B00;font-weight:700;" class="card-title">Current Order Status</h3>
                   <!-- <a href="javascript:void(0);">View Report</a> -->
+                  <!-- <div class="input-group input-group-sm">
+                    <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                    <div class="input-group-append">
+                      <button class="btn btn-navbar" type="submit">
+                        <i class="fas fa-search"></i>
+                      </button>
+                      <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </div> -->
+                  <input id="search_order" style="width:40%;" class="form-control" placeholder="Search order name....">
+                  <i class=""></i>
+                  <script>
+                      $(document).ready(function(){
+                        $("#search_order").on("keyup", function() {
+                          var value = $(this).val().toLowerCase();
+                          $("#current_order_status tr").filter(function() {
+                          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                          });
+                        });
+                      });
+                  </script>
                 </div>
               </div>
               <div class="card-body">
@@ -322,62 +349,144 @@ th {
                 <div class="position-relative mb-4" style="height:225px;">
                   <!-- <canvas id="sales-charrt" height="200"></canvas> -->
                 <div class="card-body table-responsive p-0" style="height:250px;">
-                <?php $neworders=DB::table('orders')->where('status','New')->get(); $x=1; ?>
+                <?php $neworders=DB::table('orders')->orderBy('id','desc')->get(); $x=1; ?>
                 <table class="table table-striped pointer table-valign-middle">
                   
-                  <tbody>
+                  <tbody id="current_order_status">
                   @foreach( $neworders as $neworder)
                   <tr>
                     <td>{{$neworder->ordername}}</td>
-                    <td><div class="stepper-wrapper">
-                        <div class="stepper-item completed">
-                          <div class="step-counter">1</div>
-                          <div class="step-name">New</div>
+                    
+                      @if($neworder->status==='New')
+                      <td>
+                        <div class="stepper-wrapper">
+                          <div id="new" class="stepper-item completed active">
+                            <div class="step-counter">1</div>
+                            <div class="step-name">New</div>
+                          </div>
+                          <div id="load" class="stepper-item">
+                            <div class="step-counter">2</div>
+                            <div class="step-name">Loading</div>
+                          </div>
+                          <div id="transit" class="stepper-item">
+                            <div class="step-counter">3</div>
+                            <div class="step-name">Transit</div>
+                          </div>
+                          <div id="unload" class="stepper-item">
+                            <div class="step-counter">4</div>
+                            <div class="step-name">Unloading</div>
+                          </div>
+                          <div id="fulfilled" class="stepper-item">
+                            <div class="step-counter">5</div>
+                            <div class="step-name">Fulfilled</div>
+                          </div>
                         </div>
-                        <div class="stepper-item completed">
-                          <div class="step-counter">2</div>
-                          <div class="step-name">Loading</div>
+                        </td>
+                      @endif
+                      @if($neworder->status==='Loading')
+                      <td>
+                        <div class="stepper-wrapper">
+                          <div id="new" class="stepper-item completed">
+                            <div class="step-counter">1</div>
+                            <div class="step-name">New</div>
+                          </div>
+                          <div id="load" class="stepper-item completed">
+                            <div class="step-counter">2</div>
+                            <div class="step-name">Loading</div>
+                          </div>
+                          <div id="transit" class="stepper-item active">
+                            <div class="step-counter">3</div>
+                            <div class="step-name">Transit</div>
+                          </div>
+                          <div id="unload" class="stepper-item">
+                            <div class="step-counter">4</div>
+                            <div class="step-name">Unloading</div>
+                          </div>
+                          <div id="fulfilled" class="stepper-item">
+                            <div class="step-counter">5</div>
+                            <div class="step-name">Fulfilled</div>
+                          </div>
                         </div>
-                        <div class="stepper-item completed">
-                          <div class="step-counter">3</div>
-                          <div class="step-name">Transit</div>
+                        </td>
+                      @endif
+                      @if($neworder->status==='Transit')
+                      <td>
+                        <div class="stepper-wrapper">
+                          <div id="new" class="stepper-item completed">
+                            <div class="step-counter">1</div>
+                            <div class="step-name">New</div>
+                          </div>
+                          <div id="load" class="stepper-item completed">
+                            <div class="step-counter">2</div>
+                            <div class="step-name">Loading</div>
+                          </div>
+                          <div id="transit" class="stepper-item completed">
+                            <div class="step-counter">3</div>
+                            <div class="step-name">Transit</div>
+                          </div>
+                          <div id="unload" class="stepper-item active">
+                            <div class="step-counter">4</div>
+                            <div class="step-name">Unloading</div>
+                          </div>
+                          <div id="fulfilled" class="stepper-item">
+                            <div class="step-counter">5</div>
+                            <div class="step-name">Fulfilled</div>
+                          </div>
                         </div>
-                        <div class="stepper-item active">
-                          <div class="step-counter">4</div>
-                          <div class="step-name">Unloading</div>
+                        </td>
+                      @endif
+                      @if($neworder->status==='Unloading')
+                      <td>
+                        <div class="stepper-wrapper">
+                          <div id="new" class="stepper-item completed">
+                            <div class="step-counter">1</div>
+                            <div class="step-name">New</div>
+                          </div>
+                          <div id="load" class="stepper-item completed">
+                            <div class="step-counter">2</div>
+                            <div class="step-name">Loading</div>
+                          </div>
+                          <div id="transit" class="stepper-item completed">
+                            <div class="step-counter">3</div>
+                            <div class="step-name">Transit</div>
+                          </div>
+                          <div id="unload" class="stepper-item completed">
+                            <div class="step-counter">4</div>
+                            <div class="step-name">Unloading</div>
+                          </div>
+                          <div id="fulfilled" class="stepper-item active">
+                            <div class="step-counter">5</div>
+                            <div class="step-name">Fulfilled</div>
+                          </div>
                         </div>
-                        <div class="stepper-item">
-                          <div class="step-counter">5</div>
-                          <div class="step-name">Fulfilled</div>
+                        </td>
+                      @endif
+                      @if($neworder->status==='Fulfilled')
+                      <td>
+                        <div class="stepper-wrapper">
+                          <div id="new" class="stepper-item completed">
+                            <div class="step-counter">1</div>
+                            <div class="step-name">New</div>
+                          </div>
+                          <div id="load" class="stepper-item completed">
+                            <div class="step-counter">2</div>
+                            <div class="step-name">Loading</div>
+                          </div>
+                          <div id="transit" class="stepper-item completed">
+                            <div class="step-counter">3</div>
+                            <div class="step-name">Transit</div>
+                          </div>
+                          <div id="unload" class="stepper-item completed">
+                            <div class="step-counter">4</div>
+                            <div class="step-name">Unloading</div>
+                          </div>
+                          <div id="fulfilled" class="stepper-item completed active">
+                            <div class="step-counter">5</div>
+                            <div class="step-name">Fulfilled</div>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>{{$neworder->ordername}}</td>
-                    <td><div class="stepper-wrapper">
-                        <div class="stepper-item completed">
-                          <div class="step-counter">1</div>
-                          <div class="step-name">New</div>
-                        </div>
-                        <div class="stepper-item completed">
-                          <div class="step-counter">2</div>
-                          <div class="step-name">Loading</div>
-                        </div>
-                        <div class="stepper-item active">
-                          <div class="step-counter">3</div>
-                          <div class="step-name">Transit</div>
-                        </div>
-                        <div class="stepper-item">
-                          <div class="step-counter">4</div>
-                          <div class="step-name">Unloading</div>
-                        </div>
-                        <div class="stepper-item">
-                          <div class="step-counter">5</div>
-                          <div class="step-name">Fulfilled</div>
-                        </div>
-                      </div>
-                    </td>
+                        </td>
+                      @endif
                   </tr>
                   <?php $x=$x+1; ?>
                   @endforeach
@@ -494,4 +603,5 @@ th {
             });
            });
   </script> 
+  
   @endsection
