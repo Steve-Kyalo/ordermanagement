@@ -146,6 +146,69 @@
               </div>
               <!-- /.card-body -->
             </div>
+
+            <div class="card card-warning">
+              <div class="card-header" style='background-color:#fff; color:#F37734;font-weight:700;'>
+                <h3 class="card-title">Custom fields</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Branch name</label>
+                        <input name="branch" id="branch" value="{{$orders->branch}}" type="text" class="form-control" maxlength="30" minlength="2" is-invalid placeholder="">
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Job type</label>
+                        <input name="jobtype" id="jobtype" value="{{$orders->jobtype}}" type="text" class="form-control" maxlength="30" minlength="2" is-invalid placeholder="">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>No. of devices</label>
+                        <input name="no_of_devices" id="no_of_devices" value="{{$orders->no_of_devices}}" type="text" class="form-control" maxlength="30" minlength="2" is-invalid placeholder="">
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Loan amount</label>
+                        <input name="loan_amt" id="loan_amt" value="{{$orders->loan_amt}}" type="text" class="form-control" maxlength="30" minlength="2" is-invalid placeholder="">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Wired location</label>
+                        <input name="wiredlocation" id="wiredlocation" value="{{$orders->wiredlocation}}" type="text" class="form-control" placeholder="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label>Wireless location</label>
+                        <input name="wirelesslocation" id="wirelesslocation" value="{{$orders->wirelesslocation}}" type="text" class="form-control" placeholder="">
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label>RO</label>
+                        <input name="ro" id="ro" value="{{$orders->ro}}" type="text" class="form-control" placeholder="">
+                      </div>
+                    </div>
+                  </div>
+            
+             
+              </div>
+              <!-- /.card-body -->
+            </div>
   
           </div>
           <!--/.col (left) -->

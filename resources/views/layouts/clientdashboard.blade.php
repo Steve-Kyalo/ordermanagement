@@ -34,9 +34,9 @@
         color:#FF6B00;
         font-size:20px;
     }
-    .main-header{
+    /* .main-header{
         background-color:#46444414;
-    }
+    } */
     .sidebar,.main-sidebar{
         background-color:white;
         
@@ -72,7 +72,7 @@ p{
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-whsite navbar-lisght">
+  <nav class="main-header navbar navbar-expand bg-light navbar-whsite navbar-lisght">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">

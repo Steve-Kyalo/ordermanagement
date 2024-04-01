@@ -87,11 +87,24 @@
   content: none;
 }
 th {
-  background: #17A2B8;
+  background: #A4D3E3;
   position: sticky;
   top: 0; /* Don't forget this, required for the stickiness */
   box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
 }
+@media (min-width: 992px) {
+  .modal-lg,
+  .modal-xl {
+    max-width: 800px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .modal-xl {
+    max-width: 90%;
+  }
+}
+
 </style>
 <div class="content-wrapper">
     @if (session()->has('success'))
@@ -149,7 +162,7 @@ th {
           
           <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box mb-3">
-              <span class="info-box-icon bg-dangser elevation-1"><i style="color:green;"class="fas fa-car"></i></span>
+              <span data-toggle="modal" data-target="#new-modal-xl" class="info-box-icon bg-dangser elevation-1"><i style="color:green;"class="fas fa-car"></i></span>
 
               <div class="info-box-content">
                 <span class="info-box-text">New Orders</span>
@@ -167,11 +180,11 @@ th {
 
           <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box mb-3">
-              <span class="info-box-icon bg-successs elevation-1"><i style="color:green;"class="fas fa-car"></i></span>
+              <span data-toggle="modal" data-target="#active-modal-xl" class="info-box-icon bg-successs elevation-1"><i style="color:green;"class="fas fa-car"></i></span>
 
               <div class="info-box-content">
                 <span class="info-box-text">Active Orders</span>
-                <?php $activeorders = DB::table('orders')->where('status','assigned')->get(); ?>
+                <?php $activeorders = DB::table('orders')->where('status','<>','New')->where('status','<>','Fulfilled')->where('rejected',null)->where('status','<>','Deleted')->get(); ?>
                 <span class="info-box-number">{{count($activeorders)}}</span>
               </div>
               <!-- /.info-box-content -->
@@ -181,7 +194,7 @@ th {
           <!-- /.col -->
           <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box mb-3">
-              <span class="info-box-icon bg-warfning elevation-1"><i style="color:green;"class="fas fa-car"></i></span>
+              <span data-toggle="modal" data-target="#rejected-modal-xl" class="info-box-icon bg-warfning elevation-1"><i style="color:green;"class="fas fa-car"></i></span>
 
               <div class="info-box-content">
                 <span class="info-box-text">Rejected Orders</span>
@@ -195,10 +208,10 @@ th {
           <!-- /.col -->
           <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box">
-              <span class="info-box-icon bg-insfo elevation-1"><i style="color:green;"class="fas fa-car"></i></span>
+              <span data-toggle="modal" data-target="#fulfilled-modal-xl" class="info-box-icon bg-insfo elevation-1"><i style="color:green;"class="fas fa-car"></i></span>
 
               <div class="info-box-content">
-              <?php $completedorders = DB::table('orders')->where('status','completed')->get(); ?>
+              <?php $completedorders = DB::table('orders')->where('status','Fulfilled')->get(); ?>
                 <span class="info-box-text">Fulfilled Orders</span>
                 <span class="info-box-number">
                   {{count($completedorders)}}
@@ -346,7 +359,7 @@ th {
                 </div>
                 <!-- /.d-flex -->
 
-                <div class="position-relative mb-4" style="height:225px;">
+                <div class="position-relative mb-4" style="height:210px;">
                   <!-- <canvas id="sales-charrt" height="200"></canvas> -->
                 <div class="card-body table-responsive p-0" style="height:250px;">
                 <?php $neworders=DB::table('orders')->orderBy('id','desc')->get(); $x=1; ?>
@@ -525,7 +538,7 @@ th {
                 </div>
               </div>
               <div class="card-body table-responsive p-0">
-                <?php $neworders=DB::table('orders')->where('status','New')->get(); $x=1; ?>
+                <?php $neworders=DB::table('orders')->where('status','New')->orderBy('id','desc')->get(); $x=1; ?>
                 <table class="table table-bordered table-valign-middle">
                   <thead style="colsor:blue;background-color:#A4D3E3;">
                   <tr>
@@ -604,4 +617,242 @@ th {
            });
   </script> 
   
+      <!-- Start of new orders modal -->
+      <div class="modal fade" id="new-modal-xl">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" style="color:#FF6B00;font-size:20px;">New orders</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <div class="card-body table-responsive p-0">
+                <?php $neworders=DB::table('orders')->where('status','New')->orderBy('id','desc')->get(); $x=1; ?>
+                <table class="table table-bordered table-valign-middle">
+                  <thead style="colodr:blue;">
+                  <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Create Date</th>
+                    <th>Client Name</th>
+                    <th>Phone</th>
+                    <th>Delivery Start Date</th>
+                    <th>Delivery End Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  @foreach( $neworders as $neworder)
+                  <tr>
+                    <td>{{$x}}</td>
+                    <td>{{$neworder->ordername}}</td>
+                    <td>{{$neworder->created_at}}</td>
+                    <td>{{$neworder->firstname}} {{$neworder->lastname}}</td>
+                    <td>{{$neworder->phone}}</td>
+                    <td>{{$neworder->startdate}}</td>
+                    <td>{{$neworder->enddate}}</td>
+                    <td>{{$neworder->status}}</td>
+                    <td>
+                    <a href="{{route('edit_order',['id'=>$neworder->id])}}"><i style="color:green; font-size:18px;" class="fa fa-edit"></i></a>&nbsp;&nbsp;
+                        <buttons class="remove-user pointer" data-id="{{ $neworder->id }}" data-action="{{ route('destroyorder',$neworder->id) }}"><font color="red"><i class="fa fa-trash-alt"></i></font></buttons>
+                    </td>
+                  </tr>
+                  <?php $x=$x+1; ?>
+                  @endforeach
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- end of new orders modal -->
+
+      <!-- Start of active orders modal -->
+      <div class="modal fade" id="active-modal-xl">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" style="color:#FF6B00;font-size:20px;">Active orders</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <div class="card-body table-responsive p-0">
+                <?php $neworders=DB::table('orders')->where('status','<>','New')->where('status','<>','Fulfilled')->where('rejected',null)->where('status','<>','Deleted')->orderBy('id','desc')->get(); $x=1; ?>
+                <table class="table table-bordered table-valign-middle">
+                  <thead style="colodr:blue;">
+                  <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Create Date</th>
+                    <th>Client Name</th>
+                    <th>Phone</th>
+                    <th>Unit</th>
+                    <th>Driver</th>
+                    <th>Delivery Start Date</th>
+                    <th>Delivery End Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  @foreach( $neworders as $neworder)
+                  <tr>
+                    <td>{{$x}}</td>
+                    <td>{{$neworder->ordername}}</td>
+                    <td>{{$neworder->created_at}}</td>
+                    <td>{{$neworder->firstname}} {{$neworder->lastname}}</td>
+                    <td>{{$neworder->phone}}</td>
+                    <td></td>
+                    <td></td>
+                    <td>{{$neworder->startdate}}</td>
+                    <td>{{$neworder->enddate}}</td>
+                    <td>{{$neworder->status}}</td>
+                    <td>
+                    <a href="{{route('edit_order',['id'=>$neworder->id])}}"><i style="color:green; font-size:18px;" class="fa fa-edit"></i></a>&nbsp;&nbsp;
+                    </td>
+                  </tr>
+                  <?php $x=$x+1; ?>
+                  @endforeach
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- end of active orders modal -->
+
+      <!-- Start of rejected orders modal -->
+      <div class="modal fade" id="rejected-modal-xl">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" style="color:#FF6B00;font-size:20px;">Rejected orders</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <div class="card-body table-responsive p-0">
+                <?php $neworders=DB::table('orders')->where('status','New')->where('rejected',1)->orderBy('id','desc')->get(); $x=1; ?>
+                <table class="table table-bordered table-valign-middle">
+                  <thead style="colodr:blue;">
+                  <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Create Date</th>
+                    <th>Client Name</th>
+                    <th>Phone</th>
+                    <th>Unit</th>
+                    <th>Rejected by</th>
+                    <th>Reason</th>
+                    <th>Action</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  @foreach( $neworders as $neworder)
+                  <tr>
+                    <td>{{$x}}</td>
+                    <td>{{$neworder->ordername}}</td>
+                    <td>{{$neworder->created_at}}</td>
+                    <td>{{$neworder->firstname}} {{$neworder->lastname}}</td>
+                    <td>{{$neworder->phone}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                    <a href="{{route('edit_order',['id'=>$neworder->id])}}"><i style="color:green; font-size:18px;" class="fa fa-edit"></i></a>&nbsp;&nbsp;
+                    </td>
+                  </tr>
+                  <?php $x=$x+1; ?>
+                  @endforeach
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- end of rejected orders modal -->
+
+      <!-- Start of fulfilled orders modal -->
+      <div class="modal fade" id="fulfilled-modal-xl">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" style="color:#FF6B00;font-size:20px;">Fulfilled orders</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <div class="card-body table-responsive p-0">
+                <?php $neworders=DB::table('orders')->where('status','Fulfilled')->orderBy('id','desc')->get(); $x=1; ?>
+                <table class="table table-bordered table-valign-middle">
+                  <thead style="colodr:blue;">
+                  <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Create Date</th>
+                    <th>Client Name</th>
+                    <th>Phone</th>
+                    <th>Unit</th>
+                    <th>Delivery Start Date</th>
+                    <th>Delivery End Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  @foreach( $neworders as $neworder)
+                  <tr>
+                    <td>{{$x}}</td>
+                    <td>{{$neworder->ordername}}</td>
+                    <td>{{$neworder->created_at}}</td>
+                    <td>{{$neworder->firstname}} {{$neworder->lastname}}</td>
+                    <td>{{$neworder->phone}}</td>
+                    <td></td>
+                    <td>{{$neworder->startdate}}</td>
+                    <td>{{$neworder->enddate}}</td>
+                    <td>{{$neworder->status}}</td>
+                    <td>
+                    <a href=""><i style="color:green; font-size:18px;" class="fa fa-print"></i></a>&nbsp;&nbsp;
+                    </td>
+                  </tr>
+                  <?php $x=$x+1; ?>
+                  @endforeach
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- end of fulfilled orders modal -->
   @endsection

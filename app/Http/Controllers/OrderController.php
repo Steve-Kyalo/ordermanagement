@@ -58,12 +58,20 @@ class OrderController extends Controller
         $lastname = $request->input('lastname');
         $phone = $request->input('phone');
         $email = $request->input('email');
+        //custom fields
+        $branch = $request->input('branch');
+        $jobtype = $request->input('jobtype');
+        $no_of_devices = $request->input('no_of_devices');
+        $loan_amt = $request->input('loan_amt');
+        $wiredlocation = $request->input('wiredlocation');
+        $wirelesslocation = $request->input('wirelesslocation');
+        $ro = $request->input('ro');
         $status = 'New';
         $created_by = Auth::user()->id;
  
         $order = Order::where('ordername', '=', $request->input('ordername'))->where('status','<>','Completed')->first();
         if ($order === null) {
-            DB::insert('insert into orders(ordername,ordertype,address,startdate,enddate,cost,weight,volume,servicetime,radius,priority,comment,firstname,lastname,phone,email,status,created_by) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$ordername,$ordertype,$address,$startdate,$enddate,$cost,$weight,$volume,$servicetime,$radius,$priority,$comment,$firstname,$lastname,$phone,$email,$status,$created_by]);
+            DB::insert('insert into orders(ordername,ordertype,address,startdate,enddate,cost,weight,volume,servicetime,radius,priority,comment,firstname,lastname,phone,email,status,branch,jobtype,no_of_devices,loan_amt,wiredlocation,wirelesslocation,ro,created_by) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$ordername,$ordertype,$address,$startdate,$enddate,$cost,$weight,$volume,$servicetime,$radius,$priority,$comment,$firstname,$lastname,$phone,$email,$status,$branch,$jobtype,$no_of_devices,$loan_amt,$wiredlocation,$wirelesslocation,$ro,$created_by]);
             return redirect()->route('order')->with('success','Order details added successfully');
         } else {
             return redirect()->route('order')->with('error','Order processes ongoing!');
@@ -95,6 +103,14 @@ class OrderController extends Controller
             $orders->lastname = $request->input('lastname');
             $orders->phone = $request->input('phone');
             $orders->email = $request->input('email');
+            //custom fields
+            $orders->branch = $request->input('branch');
+            $orders->jobtype = $request->input('jobtype');
+            $orders->no_of_devices = $request->input('no_of_devices');
+            $orders->loan_amt = $request->input('loan_amt');
+            $orders->wiredlocation = $request->input('wiredlocation');
+            $orders->wirelesslocation = $request->input('wirelesslocation');
+            $orders->ro = $request->input('ro');
             $orders->edited_by = Auth::user()->id;
             $orders->edited_at = date('Y-m-d H:i:s');
 
